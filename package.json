@@ -9,10 +9,12 @@
     "test:connection": "node examples/test_connection.js",
     "data:update": "node examples/update_data.js",
     "data:mark": "node examples/mark_prices.js",
+    "model:train": "node examples/train_model.js",
     "view": "nodemon src/view_server.js",
     "train": "node examples/train_and_predict.js"
   },
   "dependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0",
     "axios": "^1.6.0",
     "ccxt": "^4.4.0",
     "dotenv": "^16.3.1",
