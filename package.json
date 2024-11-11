@@ -9,6 +9,7 @@
     "test:connection": "node examples/test_connection.js",
     "data:update": "node examples/update_data.js",
     "data:mark": "node examples/mark_prices.js",
+    "view": "nodemon src/view_server.js",
     "train": "node examples/train_and_predict.js"
   },
   "dependencies": {

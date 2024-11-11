@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标记K线图</title>
+    <script type="text/javascript" src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-container {
+            position: relative;
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>标记K线图</h1>
+        <div class="chart-container" id="chart"></div>
+    </div>
+
+    <script>
+        class MarkedChart {
+            constructor() {
+                this.chart = null;
+                this.candlestickSeries = null;
+                this.volumeSeries = null;
+            }
+
+            initialize() {
+                const container = document.getElementById('chart');
+                
+                // 创建图表
+                this.chart = LightweightCharts.createChart(container, {
+                    width: container.clientWidth,
+                    height: container.clientHeight,
+                    layout: {
+                        background: { color: '#ffffff' },
+                        textColor: '#333333',
+                    },
+                    grid: {
+                        vertLines: { color: '#f0f0f0' },
+                        horzLines: { color: '#f0f0f0' },
+                    },
+                    crosshair: {
+                        mode: LightweightCharts.CrosshairMode.Normal,
+                    },
+                    rightPriceScale: {
+                        borderColor: '#dcdee0',
+                    },
+                    timeScale: {
+                        borderColor: '#dcdee0',
+                        timeVisible: true,
+                        secondsVisible: false,
+                    },
+                });
+
+                // 创建K线图
+                this.candlestickSeries = this.chart.addCandlestickSeries({
+                    upColor: '#26a69a',
+                    downColor: '#ef5350',
+                    borderVisible: false,
+                    wickUpColor: '#26a69a',
+                    wickDownColor: '#ef5350',
+                });
+
+                // 创建成交量图
+                this.volumeSeries = this.chart.addHistogramSeries({
+                    color: '#26a69a',
+                    priceFormat: {
+                        type: 'volume',
+                    },
+                    priceScaleId: '',
+                    scaleMargins: {
+                        top: 0.8,
+                        bottom: 0,
+                    },
+                });
+
+                // 加载数据
+                this.loadData();
+
+                // 窗口大小改变事件
+                window.addEventListener('resize', () => this.handleResize());
+            }
+
+            getMarkerColor(mark) {
+                // 根据标记值生成颜色
+                if (mark > 0) {
+                    // 上涨标记使用绿色系
+                    const intensity = Math.min(Math.max(mark * 10, 50), 200);
+                    return `rgb(0, ${intensity}, 0)`;
+                } else {
+                    // 下跌标记使用红色系
+                    const intensity = Math.min(Math.max(Math.abs(mark) * 10, 50), 200);
+                    return `rgb(${intensity}, 0, 0)`;
+                }
+            }
+
+            async loadData() {
+                try {
+                    // 从本地文件加载数据
+                    const response = await fetch('/cache/kline_data_marked.json');
+                    if (!response.ok) {
+                        throw new Error('获取数据失败');
+                    }
+                    const rawData = await response.json();
+
+                    // 将对象格式转换为数组
+                    const data = Object.entries(rawData).map(([timestamp, item]) => ({
+                        timestamp: parseInt(timestamp),
+                        ...item
+                    }));
+
+                    // 按时间排序
+                    const sortedData = data.sort((a, b) => a.timestamp - b.timestamp);
+
+                    // 处理K线数据
+                    const candleData = sortedData.map(item => ({
+                        time: Math.floor(item.timestamp / 1000),
+                        open: parseFloat(item.open),
+                        high: parseFloat(item.high),
+                        low: parseFloat(item.low),
+                        close: parseFloat(item.close)
+                    }));
+
+                    // 处理成交量数据
+                    const volumeData = sortedData.map(item => ({
+                        time: Math.floor(item.timestamp / 1000),
+                        value: parseFloat(item.volume),
+                        color: parseFloat(item.close) >= parseFloat(item.open) ? 'rgba(38, 166, 154, 0.5)' : 'rgba(239, 83, 80, 0.5)'
+                    }));
+
+                    // 处理标记数据
+                    const markers = sortedData
+                        .filter(item => item.mark !== 0)
+                        .map(item => ({
+                            time: Math.floor(item.timestamp / 1000),
+                            position: 'aboveBar',
+                            color: this.getMarkerColor(item.mark),
+                            shape: 'circle',
+                            text: item.mark.toString() + '%'
+                        }));
+
+                    // 设置数据
+                    this.candlestickSeries.setData(candleData);
+                    this.volumeSeries.setData(volumeData);
+                    this.candlestickSeries.setMarkers(markers);
+
+                    // 调整视图
+                    this.chart.timeScale().fitContent();
+
+                    // 输出统计信息
+                    const stats = this.calculateStats(sortedData);
+                    console.log('标记统计:', stats);
+
+                } catch (error) {
+                    console.error('加载数据失败:', error);
+                }
+            }
+
+            calculateStats(data) {
+                const stats = {
+                    total: data.length,
+                    marked: 0,
+                    marks: {}
+                };
+
+                data.forEach(item => {
+                    if (item.mark !== 0) {
+                        stats.marked++;
+                        stats.marks[item.mark] = (stats.marks[item.mark] || 0) + 1;
+                    }
+                });
+
+                return stats;
+            }
+
+            handleResize() {
+                const container = document.getElementById('chart');
+                this.chart.applyOptions({
+                    width: container.clientWidth,
+                    height: container.clientHeight
+                });
+            }
+        }
+
+        // 当页面加载完成时初始化图表
+        document.addEventListener('DOMContentLoaded', () => {
+            const chart = new MarkedChart();
+            chart.initialize();
+        });
+    </script>
+</body>
+</html>

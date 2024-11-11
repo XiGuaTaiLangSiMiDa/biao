@@ -12,8 +12,41 @@ class PriceMarkService {
     getMarkForChange(change) {
         const absChange = Math.abs(change);
         if (absChange < 0.01) return 0;
-        const mark = Math.ceil(absChange / 0.01);
+        const mark = Math.round(absChange * 100);  // 直接转换为百分比
         return change >= 0 ? mark : -mark;
+    }
+
+    findMaxConsecutiveChange(data, startIndex) {
+        const startPrice = data[startIndex].close;
+        let maxChange = 0;
+        let lastChange = 0;
+        let direction = null;
+
+        for (let i = startIndex + 1; i < data.length; i++) {
+            const currentPrice = data[i].close;
+            const priceChange = (currentPrice - startPrice) / startPrice;
+            
+            // 确定初始方向
+            if (direction === null) {
+                if (priceChange > 0) direction = 1;
+                else if (priceChange < 0) direction = -1;
+                else continue;
+            }
+
+            // 如果方向改变或变动减小，停止检查
+            if ((direction === 1 && priceChange <= lastChange) ||
+                (direction === -1 && priceChange >= lastChange)) {
+                break;
+            }
+
+            // 更新最大变动
+            if (Math.abs(priceChange) > Math.abs(maxChange)) {
+                maxChange = priceChange;
+                lastChange = priceChange;
+            }
+        }
+
+        return maxChange;
     }
 
     async markPriceChanges() {
@@ -45,33 +78,14 @@ class PriceMarkService {
             });
 
             // 遍历每个点
-            let startIndex = 0;
-            let currentDirection = 0;
-
-            for (let i = 1; i < sortedData.length; i++) {
-                const startPrice = sortedData[startIndex].close;
-                const currentPrice = sortedData[i].close;
-                const priceChange = (currentPrice - startPrice) / startPrice;
-                const direction = priceChange > 0 ? 1 : priceChange < 0 ? -1 : 0;
-
-                // 如果方向改变或者没有变动
-                if (direction === 0 || (currentDirection !== 0 && direction !== currentDirection)) {
-                    startIndex = i;
-                    currentDirection = 0;
-                    continue;
-                }
-
-                // 更新当前方向
-                if (currentDirection === 0) {
-                    currentDirection = direction;
-                }
-
-                // 标记当前点
-                const mark = this.getMarkForChange(priceChange);
-                if (mark !== 0) {
+            for (let i = 0; i < sortedData.length; i++) {
+                // 找出从当前点开始的最大连续变动
+                const maxChange = this.findMaxConsecutiveChange(sortedData, i);
+                
+                // 如果变动超过阈值，标记当前点
+                if (Math.abs(maxChange) >= 0.01) {
+                    const mark = this.getMarkForChange(maxChange);
                     results[sortedData[i].timestamp].mark = mark;
-                    startIndex = i;
-                    currentDirection = 0;
                 }
             }
 
