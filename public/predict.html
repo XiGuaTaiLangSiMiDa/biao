@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-line Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-section {
+            margin-bottom: 20px;
+        }
+        .prediction-results {
+            display: none;
+            margin-top: 20px;
+        }
+        .prediction-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .prediction-up {
+            border-left: 4px solid #28a745;
+        }
+        .prediction-down {
+            border-left: 4px solid #dc3545;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>K-line Prediction</h1>
+        
+        <div class="input-section">
+            <label for="datetime">Select Date and Time:</label><br>
+            <input type="datetime-local" id="datetime" required>
+            <button onclick="getPredictions()">Get Predictions</button>
+        </div>
+
+        <div class="loading" id="loading">
+            Loading predictions...
+        </div>
+
+        <div class="prediction-results" id="results">
+            <h2>Predictions for Next 5 K-bars</h2>
+            <div id="predictions"></div>
+        </div>
+    </div>
+
+    <script>
+        async function getPredictions() {
+            const datetime = document.getElementById('datetime').value;
+            if (!datetime) {
+                alert('Please select a date and time');
+                return;
+            }
+
+            const timestamp = new Date(datetime).getTime();
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ timestamp })
+                });
+
+                const predictions = await response.json();
+                displayPredictions(predictions);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error getting predictions');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayPredictions(predictions) {
+            const container = document.getElementById('predictions');
+            container.innerHTML = '';
+
+            predictions.forEach(pred => {
+                const date = new Date(parseInt(pred.timestamp));
+                const card = document.createElement('div');
+                card.className = `prediction-card prediction-${pred.prediction === 1 ? 'up' : 'down'}`;
+                
+                card.innerHTML = `
+                    <strong>Time:</strong> ${date.toLocaleString()}<br>
+                    <strong>Probability:</strong> ${(pred.probability * 100).toFixed(2)}%<br>
+                    <strong>Prediction:</strong> ${pred.prediction === 1 ? 'UP ↑' : 'DOWN ↓'}
+                `;
+                
+                container.appendChild(card);
+            });
+
+            document.getElementById('results').style.display = 'block';
+        }
+
+        // Set default datetime to current time
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getMinutes() % 15); // Round to nearest 15 minutes
+        document.getElementById('datetime').value = now.toISOString().slice(0, 16);
+    </script>
+</body>
+</html>

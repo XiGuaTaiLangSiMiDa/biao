@@ -1,6 +1,14 @@
+const express = require('express');
+const path = require('path');
 const tf = require('@tensorflow/tfjs-node');
 const { createFeatures, normalizeFeatures } = require('./feature_engineering');
 const { loadData } = require('./data_loader');
+
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+app.use(express.static('public'));
 
 let modelInstance = null;
 
@@ -18,20 +26,15 @@ async function loadModel() {
 }
 
 async function predictMultiple(data, startTimestamp, count = 5) {
-    // Load the trained model
     const model = await loadModel();
-
-    // Process the input data
     const { features, timestamps } = createFeatures(data);
     const normalizedFeatures = normalizeFeatures(features);
 
-    // Find the starting index
     const startIndex = timestamps.findIndex(ts => parseInt(ts) >= parseInt(startTimestamp));
     if (startIndex === -1) {
         throw new Error('Start timestamp is beyond available data');
     }
 
-    // Get predictions for the next 'count' periods
     const predictions = [];
     for (let i = 0; i < count && (startIndex + i) < timestamps.length; i++) {
         const index = startIndex + i;
@@ -45,7 +48,6 @@ async function predictMultiple(data, startTimestamp, count = 5) {
             prediction: predictionValue[0] >= 0.5 ? 1 : 0
         });
 
-        // Cleanup tensors
         inputTensor.dispose();
         prediction.dispose();
     }
@@ -53,33 +55,31 @@ async function predictMultiple(data, startTimestamp, count = 5) {
     return predictions;
 }
 
-// Main execution if run directly
-async function main() {
+// Prediction endpoint
+app.post('/predict', async (req, res) => {
     try {
-        const targetTimestamp = process.argv[2] || Date.now().toString();
+        const { timestamp } = req.body;
         const data = await loadData('./cache/kline_data.json');
-        const predictions = await predictMultiple(data, targetTimestamp);
-        
-        console.log('\nPrediction Results:');
-        console.log('==================');
-        predictions.forEach(result => {
-            const date = new Date(parseInt(result.timestamp));
-            console.log(`Time: ${date.toLocaleString()}`);
-            console.log(`Probability: ${(result.probability * 100).toFixed(2)}%`);
-            console.log(`Prediction: ${result.prediction === 1 ? 'UP' : 'DOWN'}`);
-            console.log('------------------');
-        });
-
+        const predictions = await predictMultiple(data, timestamp);
+        res.json(predictions);
     } catch (error) {
-        console.error('Error during prediction:', error);
+        console.error('Prediction error:', error);
+        res.status(500).json({ error: error.message });
     }
-}
+});
 
-if (require.main === module) {
-    main();
-}
+// Serve the prediction page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/predict.html'));
+});
 
-module.exports = {
-    predictMultiple,
-    loadModel
-};
+// Start server
+app.listen(port, () => {
+    console.log(`Prediction server running at http://localhost:${port}`);
+    console.log('Loading model...');
+    loadModel().then(() => {
+        console.log('Ready to make predictions!');
+    }).catch(err => {
+        console.error('Error loading model:', err);
+    });
+});
