@@ -40,8 +40,8 @@ async function evaluateModel(model, xTest, yTest) {
     predictions.dispose();
     
     return {
-        loss: evaluation[0],
-        accuracy: evaluation[1],
+        loss: evaluation[0].dataSync()[0],
+        accuracy: evaluation[1].dataSync()[0],
         precision,
         recall,
         f1Score,
