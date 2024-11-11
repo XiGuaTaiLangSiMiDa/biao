@@ -712,5 +712,1027 @@
     "price": 190.33,
     "action": "short",
     "createdAt": "2024-11-11T07:08:02.260Z"
+  },
+  {
+    "id": "ae094b16-1966-40a5-b0fe-2c51eb9f8dac",
+    "timestamp": 1729898100000,
+    "price": 161.92,
+    "action": "long",
+    "createdAt": "2024-11-11T07:14:15.370Z"
+  },
+  {
+    "id": "06fa8aee-69ff-4622-a007-2f23313c4019",
+    "timestamp": 1729908000000,
+    "price": 162.76,
+    "action": "long",
+    "createdAt": "2024-11-11T07:14:18.695Z"
+  },
+  {
+    "id": "f65ba15e-16f7-4613-9405-2860e627e3d3",
+    "timestamp": 1729866600000,
+    "price": 175.54,
+    "action": "short",
+    "createdAt": "2024-11-11T07:14:24.444Z"
+  },
+  {
+    "id": "b7d3485d-2b54-49d1-a9b6-31bfa6b341e3",
+    "timestamp": 1729880100000,
+    "price": 170.93,
+    "action": "short",
+    "createdAt": "2024-11-11T07:14:33.995Z"
+  },
+  {
+    "id": "80924632-777f-4af7-a45d-cfdadda4b7f3",
+    "timestamp": 1729847700000,
+    "price": 171.39,
+    "action": "long",
+    "createdAt": "2024-11-11T07:14:38.393Z"
+  },
+  {
+    "id": "b96c9f3f-34ac-40ac-8829-bc7685ff6428",
+    "timestamp": 1729843200000,
+    "price": 171.4,
+    "action": "long",
+    "createdAt": "2024-11-11T07:14:41.111Z"
+  },
+  {
+    "id": "d7e3dfa2-1db9-4256-8890-c4b7bce315a8",
+    "timestamp": 1729809900000,
+    "price": 178.72,
+    "action": "short",
+    "createdAt": "2024-11-11T07:14:45.460Z"
+  },
+  {
+    "id": "c0f89dce-c0a5-417a-812d-fc56f335d1a3",
+    "timestamp": 1729762200000,
+    "price": 171.13,
+    "action": "long",
+    "createdAt": "2024-11-11T07:14:50.760Z"
+  },
+  {
+    "id": "03702557-17c2-46e4-b429-c8b05bea158e",
+    "timestamp": 1729721700000,
+    "price": 170.38,
+    "action": "long",
+    "createdAt": "2024-11-11T07:14:54.677Z"
+  },
+  {
+    "id": "c9e0d9a6-8baf-4d4a-9d93-8bd8e80d62e8",
+    "timestamp": 1729715400000,
+    "price": 173.93,
+    "action": "short",
+    "createdAt": "2024-11-11T07:14:57.326Z"
+  },
+  {
+    "id": "691feb35-7ac7-4f19-90b5-f643a95ae9e2",
+    "timestamp": 1729706400000,
+    "price": 166.7,
+    "action": "long",
+    "createdAt": "2024-11-11T07:15:02.762Z"
+  },
+  {
+    "id": "f7341e17-7d63-49d0-ac6d-f690b49945e2",
+    "timestamp": 1729691100000,
+    "price": 169.07,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:07.209Z"
+  },
+  {
+    "id": "713be4be-87c0-49c1-b6a7-0d317225e7ab",
+    "timestamp": 1729637100000,
+    "price": 168.94,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:10.109Z"
+  },
+  {
+    "id": "070a4c17-c617-405a-bb8f-4f21e4b0b897",
+    "timestamp": 1729615500000,
+    "price": 166.1,
+    "action": "long",
+    "createdAt": "2024-11-11T07:15:14.194Z"
+  },
+  {
+    "id": "bc0214bc-aba2-491a-9c28-c78e15aa62b2",
+    "timestamp": 1729609200000,
+    "price": 169.5,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:17.542Z"
+  },
+  {
+    "id": "fa36007e-e154-43c6-95b2-05ff57e7ea19",
+    "timestamp": 1729598400000,
+    "price": 168.72,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:20.444Z"
+  },
+  {
+    "id": "dc216159-c4d6-43e9-8151-75c8b5650b27",
+    "timestamp": 1729589400000,
+    "price": 164.03,
+    "action": "long",
+    "createdAt": "2024-11-11T07:15:47.077Z"
+  },
+  {
+    "id": "37256655-271f-4855-8320-ff8182aa24c7",
+    "timestamp": 1729574100000,
+    "price": 167.98,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:50.144Z"
+  },
+  {
+    "id": "09d751da-a704-406d-9320-49905da2d172",
+    "timestamp": 1729576800000,
+    "price": 168.47,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:53.677Z"
+  },
+  {
+    "id": "f62125e2-8c6f-4f56-8cba-7018eb829fd2",
+    "timestamp": 1729557000000,
+    "price": 164.43,
+    "action": "long",
+    "createdAt": "2024-11-11T07:15:56.009Z"
+  },
+  {
+    "id": "0cb0d5fd-0af5-4520-b93b-63af0eb1f78a",
+    "timestamp": 1729562400000,
+    "price": 167.57,
+    "action": "short",
+    "createdAt": "2024-11-11T07:15:58.109Z"
+  },
+  {
+    "id": "5905b7c2-c6ed-429e-a766-1fd34c86ed4d",
+    "timestamp": 1729518300000,
+    "price": 162.64,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:00.910Z"
+  },
+  {
+    "id": "1d118b82-271f-4954-b356-46db5ce57a75",
+    "timestamp": 1729539900000,
+    "price": 167.78,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:04.243Z"
+  },
+  {
+    "id": "7ab23018-a9f0-4120-926d-5703315fd11f",
+    "timestamp": 1729550700000,
+    "price": 167.77,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:06.939Z"
+  },
+  {
+    "id": "b83fdc6c-5a67-490c-9053-663362087a19",
+    "timestamp": 1729486800000,
+    "price": 170.54,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:11.610Z"
+  },
+  {
+    "id": "6b24728d-7179-4e9b-9aee-a4ca599eed56",
+    "timestamp": 1729492200000,
+    "price": 170.69,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:13.743Z"
+  },
+  {
+    "id": "0b403021-eb83-4e0a-9b3d-df2f6b9c7741",
+    "timestamp": 1729451700000,
+    "price": 159.74,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:17.993Z"
+  },
+  {
+    "id": "7f5771c3-93a3-41b4-832f-bb4fcad36285",
+    "timestamp": 1729430100000,
+    "price": 157.9,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:21.126Z"
+  },
+  {
+    "id": "f5fb96e8-8267-4cde-951a-c599bfa4974b",
+    "timestamp": 1729434600000,
+    "price": 161.21,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:25.609Z"
+  },
+  {
+    "id": "41a26002-3f56-44d8-8e0d-1fc43bb94e88",
+    "timestamp": 1729394100000,
+    "price": 158.26,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:30.443Z"
+  },
+  {
+    "id": "f8dcbc87-3506-4709-810b-c9e3779942af",
+    "timestamp": 1729401300000,
+    "price": 159.86,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:32.992Z"
+  },
+  {
+    "id": "47b9c8be-5f56-49d8-90b4-e1867a62e024",
+    "timestamp": 1729383300000,
+    "price": 159.75,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:35.642Z"
+  },
+  {
+    "id": "c3baf346-13e3-41b5-bb9d-39097b0dc2c4",
+    "timestamp": 1729359900000,
+    "price": 155.65,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:38.575Z"
+  },
+  {
+    "id": "e128bf60-8218-47f0-a883-b1675d60b637",
+    "timestamp": 1729350000000,
+    "price": 157.28,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:41.509Z"
+  },
+  {
+    "id": "edf91e8d-49da-4bba-84e8-c7c4373ef1e2",
+    "timestamp": 1729338300000,
+    "price": 153.86,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:44.042Z"
+  },
+  {
+    "id": "9f72ae7e-a343-493a-8ab9-33d6310fd009",
+    "timestamp": 1729307700000,
+    "price": 155.3,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:47.274Z"
+  },
+  {
+    "id": "fa948f35-1d25-48e6-bb47-a634fc35a169",
+    "timestamp": 1729288800000,
+    "price": 154.04,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:50.243Z"
+  },
+  {
+    "id": "dda7bc9b-1706-443d-9447-8871c282f51b",
+    "timestamp": 1729276200000,
+    "price": 156.43,
+    "action": "short",
+    "createdAt": "2024-11-11T07:16:53.092Z"
+  },
+  {
+    "id": "dd1bdbca-5865-44c2-abb1-01e685ba0723",
+    "timestamp": 1729267200000,
+    "price": 153.92,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:56.142Z"
+  },
+  {
+    "id": "648a13d3-3fb5-4926-b389-b6ad9af426fb",
+    "timestamp": 1729255500000,
+    "price": 152.44,
+    "action": "long",
+    "createdAt": "2024-11-11T07:16:58.576Z"
+  },
+  {
+    "id": "a1cbcdbc-5606-4bf1-a65a-4390a4927a9f",
+    "timestamp": 1729212300000,
+    "price": 149.79,
+    "action": "long",
+    "createdAt": "2024-11-11T07:17:02.709Z"
+  },
+  {
+    "id": "a8808a6a-347d-4f75-aab0-3beba018640e",
+    "timestamp": 1729188900000,
+    "price": 148.27,
+    "action": "long",
+    "createdAt": "2024-11-11T07:17:05.160Z"
+  },
+  {
+    "id": "00459ad9-bb1e-4715-b026-1a5e1a6c691b",
+    "timestamp": 1729179900000,
+    "price": 152.91,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:07.422Z"
+  },
+  {
+    "id": "f283deea-6da7-43fe-88dc-5a7f5da5a5ee",
+    "timestamp": 1729171800000,
+    "price": 152.89,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:09.759Z"
+  },
+  {
+    "id": "bf6d9193-c56b-45c8-9f9a-fbc17f2f940e",
+    "timestamp": 1729078200000,
+    "price": 157.56,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:18.327Z"
+  },
+  {
+    "id": "3b533ec4-19ad-47d9-b769-5208ed7063d6",
+    "timestamp": 1729129500000,
+    "price": 155.65,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:21.709Z"
+  },
+  {
+    "id": "d16b46ec-74d5-4094-a1bb-a2a34bcb1cd5",
+    "timestamp": 1728999900000,
+    "price": 158.56,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:28.959Z"
+  },
+  {
+    "id": "cdecf01d-61c9-467f-8897-ba5eec0ee34a",
+    "timestamp": 1729000800000,
+    "price": 157.11,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:30.810Z"
+  },
+  {
+    "id": "eb498324-62ce-4475-bae4-baa5a4d80321",
+    "timestamp": 1729004400000,
+    "price": 152.29,
+    "action": "long",
+    "createdAt": "2024-11-11T07:17:33.392Z"
+  },
+  {
+    "id": "e03259cc-63ae-4f49-8d56-0b27e403d724",
+    "timestamp": 1729005300000,
+    "price": 153.17,
+    "action": "long",
+    "createdAt": "2024-11-11T07:17:38.509Z"
+  },
+  {
+    "id": "d89f9140-37ce-45d9-a08d-58f5ccd05311",
+    "timestamp": 1729009800000,
+    "price": 155.66,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:41.792Z"
+  },
+  {
+    "id": "005368b3-d039-442c-be9b-2bcef1e99cd6",
+    "timestamp": 1728993600000,
+    "price": 152.17,
+    "action": "long",
+    "createdAt": "2024-11-11T07:17:44.424Z"
+  },
+  {
+    "id": "e21b98f7-dc5d-4720-8980-506149e100b4",
+    "timestamp": 1728959400000,
+    "price": 157.41,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:49.025Z"
+  },
+  {
+    "id": "81ae2d38-2c22-4670-83a2-20680dc6a1f6",
+    "timestamp": 1728919800000,
+    "price": 156.81,
+    "action": "short",
+    "createdAt": "2024-11-11T07:17:51.893Z"
+  },
+  {
+    "id": "eadcbaf7-a4ba-4da7-b74d-95763bb998b4",
+    "timestamp": 1728883800000,
+    "price": 151.38,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:05.693Z"
+  },
+  {
+    "id": "2f0cd6ac-3260-4d44-9e42-238ebb8d74c0",
+    "timestamp": 1728884700000,
+    "price": 151.47,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:08.060Z"
+  },
+  {
+    "id": "824280ee-988b-49c4-bf2b-fae446b1fed7",
+    "timestamp": 1728842400000,
+    "price": 144.72,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:11.057Z"
+  },
+  {
+    "id": "64928f00-bc5d-4fbf-be51-e9a90ea2aa13",
+    "timestamp": 1728832500000,
+    "price": 144.54,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:13.192Z"
+  },
+  {
+    "id": "0dab00d4-d00b-4ccf-9661-fbf3095d11a8",
+    "timestamp": 1728825300000,
+    "price": 148.02,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:16.576Z"
+  },
+  {
+    "id": "8a531615-dead-42b8-8879-03e2e43dfe6f",
+    "timestamp": 1728815400000,
+    "price": 148,
+    "action": "short",
+    "createdAt": "2024-11-11T07:18:19.340Z"
+  },
+  {
+    "id": "d9ef7f73-4fbd-4ab7-ad33-6c0f0df6b9d6",
+    "timestamp": 1728819900000,
+    "price": 146.49,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:21.575Z"
+  },
+  {
+    "id": "280628b6-364b-4968-b954-ae1b42dafdb6",
+    "timestamp": 1728802800000,
+    "price": 146.09,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:24.226Z"
+  },
+  {
+    "id": "48d0b221-29a3-4e99-92c8-24b76df98c1e",
+    "timestamp": 1728799200000,
+    "price": 146.96,
+    "action": "short",
+    "createdAt": "2024-11-11T07:18:26.926Z"
+  },
+  {
+    "id": "808d57af-0aa4-4983-aba4-1e17406705c6",
+    "timestamp": 1728791100000,
+    "price": 145.33,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:28.693Z"
+  },
+  {
+    "id": "0965cd7c-4157-498f-820a-d405c03e1a96",
+    "timestamp": 1728779400000,
+    "price": 146.99,
+    "action": "short",
+    "createdAt": "2024-11-11T07:18:32.423Z"
+  },
+  {
+    "id": "c1272dc1-0b74-487f-a1ad-d2717f9c6536",
+    "timestamp": 1728723600000,
+    "price": 145.54,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:35.609Z"
+  },
+  {
+    "id": "d8aee518-6917-46bb-803a-eac755078d9d",
+    "timestamp": 1728702900000,
+    "price": 144.89,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:39.693Z"
+  },
+  {
+    "id": "cafd69b6-7d8b-4a6c-8587-10e5aec8ab01",
+    "timestamp": 1728734400000,
+    "price": 146.27,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:42.877Z"
+  },
+  {
+    "id": "f77f87c8-30d6-42bc-97b4-e85402ee0213",
+    "timestamp": 1728738000000,
+    "price": 146.91,
+    "action": "short",
+    "createdAt": "2024-11-11T07:18:46.092Z"
+  },
+  {
+    "id": "cec60c98-3c12-4235-8def-038ddd11008b",
+    "timestamp": 1728741600000,
+    "price": 146.75,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:51.875Z"
+  },
+  {
+    "id": "929ad54a-de04-48d1-8aa7-0cf2d2bbd7c1",
+    "timestamp": 1728745200000,
+    "price": 147.06,
+    "action": "short",
+    "createdAt": "2024-11-11T07:18:54.559Z"
+  },
+  {
+    "id": "12b2c99c-ed27-4e44-a2d4-09179121b914",
+    "timestamp": 1728747900000,
+    "price": 146.12,
+    "action": "long",
+    "createdAt": "2024-11-11T07:18:57.024Z"
+  },
+  {
+    "id": "d436da45-7364-4bf3-b4b6-1498674356c1",
+    "timestamp": 1728749700000,
+    "price": 146.75,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:01.408Z"
+  },
+  {
+    "id": "b48f310a-dae9-457f-b10f-39e0671dcdaa",
+    "timestamp": 1728747900000,
+    "price": 146.12,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:03.992Z"
+  },
+  {
+    "id": "00d3bae7-f90c-4a33-9b42-96214372e767",
+    "timestamp": 1728756000000,
+    "price": 146.99,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:07.473Z"
+  },
+  {
+    "id": "5ee07a81-560b-4990-9037-d8f1e21ff095",
+    "timestamp": 1728702900000,
+    "price": 144.89,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:09.575Z"
+  },
+  {
+    "id": "ade496c5-b8d6-480e-958b-639e873b7325",
+    "timestamp": 1728692100000,
+    "price": 146.46,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:12.855Z"
+  },
+  {
+    "id": "86476228-c136-48d6-a833-9294e77d135d",
+    "timestamp": 1728685800000,
+    "price": 145.4,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:15.159Z"
+  },
+  {
+    "id": "83ea8727-5cbd-4ac4-88f2-f97fadff1731",
+    "timestamp": 1728682200000,
+    "price": 146.06,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:18.608Z"
+  },
+  {
+    "id": "3c828231-ad5c-475f-9d0c-538c640e37e8",
+    "timestamp": 1728676800000,
+    "price": 145.29,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:21.041Z"
+  },
+  {
+    "id": "6c86b1a5-62f0-44d6-8bce-c7f1d8aed0a0",
+    "timestamp": 1728673200000,
+    "price": 146.23,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:23.142Z"
+  },
+  {
+    "id": "b2b05c67-7b52-4ee5-8073-e79a1a7feef6",
+    "timestamp": 1728584100000,
+    "price": 135.93,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:29.209Z"
+  },
+  {
+    "id": "c313fd07-0494-4d6e-8bcf-d9cfbf1935e1",
+    "timestamp": 1728569700000,
+    "price": 137.22,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:34.208Z"
+  },
+  {
+    "id": "06b2dffb-3aa4-414c-a181-3670e255d305",
+    "timestamp": 1728576000000,
+    "price": 138.38,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:36.441Z"
+  },
+  {
+    "id": "7d080d56-1996-4b5f-ac58-5f2815992474",
+    "timestamp": 1728551700000,
+    "price": 137.81,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:38.925Z"
+  },
+  {
+    "id": "5c1f502e-231f-4bb2-afff-9976a9ed9247",
+    "timestamp": 1728562500000,
+    "price": 140.64,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:41.141Z"
+  },
+  {
+    "id": "fd57cfd3-6aa1-4657-a88b-7fc4e350e728",
+    "timestamp": 1728520200000,
+    "price": 138.32,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:45.291Z"
+  },
+  {
+    "id": "f8cc3f31-dafb-4476-9fb0-046384e5f1a7",
+    "timestamp": 1728539100000,
+    "price": 140.54,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:47.958Z"
+  },
+  {
+    "id": "5377da90-5752-480d-85db-25879458aa62",
+    "timestamp": 1728487800000,
+    "price": 142.75,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:53.109Z"
+  },
+  {
+    "id": "7966a13e-41d2-4594-9eef-56ab1091e483",
+    "timestamp": 1728437400000,
+    "price": 144.82,
+    "action": "short",
+    "createdAt": "2024-11-11T07:19:55.157Z"
+  },
+  {
+    "id": "173a1d44-89f7-4ea0-a70d-41e3ccc87d6a",
+    "timestamp": 1728429300000,
+    "price": 142.94,
+    "action": "long",
+    "createdAt": "2024-11-11T07:19:58.092Z"
+  },
+  {
+    "id": "5ac77dbd-d60e-4e5d-88bd-cae21a647621",
+    "timestamp": 1728401400000,
+    "price": 142.74,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:01.725Z"
+  },
+  {
+    "id": "7a748f4c-78f9-442c-b68c-bdb0f985d6fc",
+    "timestamp": 1728423000000,
+    "price": 144.37,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:04.225Z"
+  },
+  {
+    "id": "2faab62e-9895-4dc9-a1b4-bf2353be2d27",
+    "timestamp": 1728395100000,
+    "price": 145.03,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:07.725Z"
+  },
+  {
+    "id": "20f21224-9597-4825-a34f-57069eef23a6",
+    "timestamp": 1728371700000,
+    "price": 142.73,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:11.524Z"
+  },
+  {
+    "id": "cf3a73c7-ef1f-4460-8e2b-8cb5d8dce4c4",
+    "timestamp": 1728311400000,
+    "price": 151.67,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:15.372Z"
+  },
+  {
+    "id": "762018c1-c78e-46ac-aea9-542429cf450b",
+    "timestamp": 1728312300000,
+    "price": 150.54,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:17.108Z"
+  },
+  {
+    "id": "5db78da1-7dec-44fe-a215-008d3f6e2a52",
+    "timestamp": 1728306000000,
+    "price": 146.76,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:20.489Z"
+  },
+  {
+    "id": "875daaa6-b2aa-426a-8481-3fd20fb49b71",
+    "timestamp": 1728305100000,
+    "price": 146.57,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:23.206Z"
+  },
+  {
+    "id": "02cd4387-1e89-4327-99dc-a69afa641b7b",
+    "timestamp": 1728298800000,
+    "price": 146.92,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:26.475Z"
+  },
+  {
+    "id": "c988fd25-29a0-4a87-b59b-b2b8ba63c8fd",
+    "timestamp": 1728266400000,
+    "price": 150.35,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:28.758Z"
+  },
+  {
+    "id": "09b8b11b-c268-4a7f-9fc9-4b804f21bc64",
+    "timestamp": 1728274500000,
+    "price": 150.38,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:31.439Z"
+  },
+  {
+    "id": "642177d7-8df9-45e4-ae98-1b3a7f55c34f",
+    "timestamp": 1728251100000,
+    "price": 144.42,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:33.341Z"
+  },
+  {
+    "id": "398c42b2-9e25-4cf6-9d28-7cc7e2e3a0bd",
+    "timestamp": 1728242100000,
+    "price": 146.32,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:36.941Z"
+  },
+  {
+    "id": "158c0c63-62de-418a-b2f9-679a57d1473e",
+    "timestamp": 1728226800000,
+    "price": 145.93,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:39.573Z"
+  },
+  {
+    "id": "300de77a-939f-4752-b815-4ff6708c4884",
+    "timestamp": 1728161100000,
+    "price": 141.16,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:42.675Z"
+  },
+  {
+    "id": "a93080aa-34e2-4f57-9d09-e1ee300d3081",
+    "timestamp": 1728184500000,
+    "price": 143.47,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:47.588Z"
+  },
+  {
+    "id": "393555f5-7bff-4c39-b686-2f3f6e8dbb0d",
+    "timestamp": 1728100800000,
+    "price": 141.64,
+    "action": "long",
+    "createdAt": "2024-11-11T07:20:52.457Z"
+  },
+  {
+    "id": "bc75480a-7703-42f1-ad5b-49dd91e302eb",
+    "timestamp": 1728121500000,
+    "price": 144.73,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:55.441Z"
+  },
+  {
+    "id": "5bc9171b-4de5-47d5-b3a3-be2e2bb7704e",
+    "timestamp": 1728120600000,
+    "price": 144.82,
+    "action": "short",
+    "createdAt": "2024-11-11T07:20:57.541Z"
+  },
+  {
+    "id": "921003a2-651a-4dd3-be66-df46e890d3c2",
+    "timestamp": 1728051300000,
+    "price": 138.56,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:01.409Z"
+  },
+  {
+    "id": "4a327c20-5510-4dfa-abe8-c24890000d8c",
+    "timestamp": 1728059400000,
+    "price": 143.7,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:05.740Z"
+  },
+  {
+    "id": "910bbbef-47b7-4362-a1d0-c4d8a5cf4f7f",
+    "timestamp": 1728075600000,
+    "price": 144.2,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:09.475Z"
+  },
+  {
+    "id": "69f28e09-7d53-4c86-9489-18e89b19eeb6",
+    "timestamp": 1728046800000,
+    "price": 141.65,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:12.075Z"
+  },
+  {
+    "id": "fff3e844-f4b0-44dc-b428-10048875e6fd",
+    "timestamp": 1728052200000,
+    "price": 139.58,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:15.557Z"
+  },
+  {
+    "id": "22a25ccb-5d4d-4ab7-875a-e22b7365a695",
+    "timestamp": 1727973000000,
+    "price": 134.86,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:21.808Z"
+  },
+  {
+    "id": "cd591a59-651c-43ca-968e-6f1c668aa726",
+    "timestamp": 1727969400000,
+    "price": 133.71,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:24.941Z"
+  },
+  {
+    "id": "890a753e-4acc-4071-bcc2-58e3ddd9e17f",
+    "timestamp": 1727964000000,
+    "price": 136.84,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:28.008Z"
+  },
+  {
+    "id": "22c6cfba-928e-4f5c-9ab5-aec01b9b2d72",
+    "timestamp": 1727953200000,
+    "price": 138.07,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:31.724Z"
+  },
+  {
+    "id": "3659c5f0-00e0-4c6c-8cb3-31b764b46cf1",
+    "timestamp": 1727946000000,
+    "price": 136.51,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:34.141Z"
+  },
+  {
+    "id": "2d62ca6f-d770-4d46-bcbf-5332ea22a511",
+    "timestamp": 1727937000000,
+    "price": 142.21,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:37.108Z"
+  },
+  {
+    "id": "536a0d11-538d-463d-9585-43cf2b258f8f",
+    "timestamp": 1727914500000,
+    "price": 139.66,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:42.291Z"
+  },
+  {
+    "id": "822cbed3-c62c-42df-9596-d98b8bba7786",
+    "timestamp": 1727884800000,
+    "price": 147.36,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:47.058Z"
+  },
+  {
+    "id": "ca66814f-1761-4e85-8757-0d1633209f04",
+    "timestamp": 1727875800000,
+    "price": 143.85,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:49.424Z"
+  },
+  {
+    "id": "a76c8f88-65aa-441e-9b3e-eac4d7f893f4",
+    "timestamp": 1727851500000,
+    "price": 148.37,
+    "action": "short",
+    "createdAt": "2024-11-11T07:21:52.040Z"
+  },
+  {
+    "id": "caa13df4-dbc7-4ef0-aee4-d16cd5eb51f9",
+    "timestamp": 1727813700000,
+    "price": 143.61,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:55.007Z"
+  },
+  {
+    "id": "42868ae0-775d-4b1b-85d6-3a39e8724a06",
+    "timestamp": 1727821800000,
+    "price": 143.98,
+    "action": "long",
+    "createdAt": "2024-11-11T07:21:58.557Z"
+  },
+  {
+    "id": "6a1c8dd8-29cd-4550-a360-7536ef40ae4e",
+    "timestamp": 1727802900000,
+    "price": 146.22,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:02.890Z"
+  },
+  {
+    "id": "9cf4b6ad-c5d1-43f8-ad2b-85d2015cb87e",
+    "timestamp": 1727806500000,
+    "price": 149.01,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:08.241Z"
+  },
+  {
+    "id": "5c7352b5-29e3-42de-8ea2-7946816da77a",
+    "timestamp": 1727796600000,
+    "price": 150.07,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:11.541Z"
+  },
+  {
+    "id": "97937d27-652c-45d0-9fff-242343f1b469",
+    "timestamp": 1727773200000,
+    "price": 157.25,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:14.024Z"
+  },
+  {
+    "id": "f249975e-6cc8-447c-b69c-cc4393d6e9b7",
+    "timestamp": 1727774100000,
+    "price": 156.98,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:16.409Z"
+  },
+  {
+    "id": "965c1da7-763f-44b6-a07b-9095226da7c0",
+    "timestamp": 1727780400000,
+    "price": 157.04,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:19.657Z"
+  },
+  {
+    "id": "161b469e-9950-4e63-9d48-f8a86f934576",
+    "timestamp": 1727739000000,
+    "price": 152.01,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:24.792Z"
+  },
+  {
+    "id": "f0d11ed6-44f2-4ed7-b247-a371e2e4dd56",
+    "timestamp": 1727729100000,
+    "price": 156.74,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:28.640Z"
+  },
+  {
+    "id": "78ba4f8a-268a-4e9e-828e-e3f54ca27ddf",
+    "timestamp": 1727706600000,
+    "price": 157.09,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:31.691Z"
+  },
+  {
+    "id": "a9228c7f-b62e-42b4-bcec-7fc491cb8eff",
+    "timestamp": 1727692200000,
+    "price": 154.1,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:35.439Z"
+  },
+  {
+    "id": "be025638-e1b9-416f-9a02-38a6d4cabab5",
+    "timestamp": 1727690400000,
+    "price": 154.09,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:37.391Z"
+  },
+  {
+    "id": "0be55458-8a82-42c6-99cf-7a70177fb3e0",
+    "timestamp": 1727680500000,
+    "price": 157.52,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:39.874Z"
+  },
+  {
+    "id": "7387f204-ffe1-4b5e-bdfc-4183e03f0261",
+    "timestamp": 1727669700000,
+    "price": 155.52,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:42.774Z"
+  },
+  {
+    "id": "173033ac-a399-41f2-a437-977629964aa7",
+    "timestamp": 1727659800000,
+    "price": 158.87,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:45.791Z"
+  },
+  {
+    "id": "7748c8eb-078d-4d41-a239-869ec3abce4c",
+    "timestamp": 1727644500000,
+    "price": 160.78,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:48.973Z"
+  },
+  {
+    "id": "eb5d313d-5c3c-47b8-98eb-240f0e887eba",
+    "timestamp": 1727604900000,
+    "price": 155.23,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:52.740Z"
+  },
+  {
+    "id": "a4fd9c10-b5a0-453f-9e4b-9fdfdde0bc6a",
+    "timestamp": 1727597700000,
+    "price": 155.21,
+    "action": "long",
+    "createdAt": "2024-11-11T07:22:56.524Z"
+  },
+  {
+    "id": "7719e840-58b9-423c-af41-3d449f631232",
+    "timestamp": 1727586900000,
+    "price": 158.07,
+    "action": "short",
+    "createdAt": "2024-11-11T07:22:58.407Z"
+  },
+  {
+    "id": "a0426592-76da-49ed-8c6b-03b87418eef2",
+    "timestamp": 1727575200000,
+    "price": 158.26,
+    "action": "short",
+    "createdAt": "2024-11-11T07:23:00.340Z"
   }
 ]
