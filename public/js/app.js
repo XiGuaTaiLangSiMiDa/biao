@@ -12,9 +12,6 @@ class App {
         // 初始化图表
         window.chartManager.initialize('chart');
 
-        // 初始化标记位置管理器
-        await window.positionsManager.initialize();
-
         // 初始化弹窗
         this.initializeModal();
 
@@ -23,6 +20,9 @@ class App {
 
         // 加载初始数据
         await this.loadData();
+
+        // 初始化标记位置管理器
+        await window.positionsManager.initialize();
     }
 
     initializeModal() {
@@ -52,9 +52,9 @@ class App {
 
         // 操作按钮事件
         this.modal.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', async () => {
                 const action = btn.dataset.action;
-                this.addMarker(action);
+                await this.addMarker(action);
             });
         });
     }
@@ -117,6 +117,7 @@ class App {
 
             // 显示成功提示
             this.showToast(`成功添加${this.getActionText(action)}标记`);
+
         } catch (error) {
             console.error('添加标记失败:', error);
             this.showToast('添加标记失败，请重试', 'error');

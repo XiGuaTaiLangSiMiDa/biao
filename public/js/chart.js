@@ -8,7 +8,6 @@ class ChartManager {
         this.onTimeSelected = null;
         this.highlightedBar = null;
         this.data = [];
-        this.lastVisibleRange = null;
     }
 
     initialize(containerId) {
@@ -29,33 +28,14 @@ class ChartManager {
             },
             crosshair: {
                 mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: {
-                    color: '#9B7DFF',
-                    width: 1,
-                    style: 1,
-                    labelBackgroundColor: '#9B7DFF',
-                },
-                horzLine: {
-                    color: '#9B7DFF',
-                    width: 1,
-                    style: 1,
-                    labelBackgroundColor: '#9B7DFF',
-                },
             },
             rightPriceScale: {
                 borderColor: '#dcdee0',
-                scaleMargins: {
-                    top: 0.1,    // K线图顶部边距
-                    bottom: 0.4  // 增加底部边距，为成交量图留出更多空间
-                }
             },
             timeScale: {
                 borderColor: '#dcdee0',
                 timeVisible: true,
                 secondsVisible: false,
-                barSpacing: 12,
-                fixLeftEdge: true,
-                fixRightEdge: true,
             },
         });
 
@@ -66,35 +46,19 @@ class ChartManager {
             borderVisible: false,
             wickUpColor: '#26a69a',
             wickDownColor: '#ef5350',
-            priceScaleId: 'right',
-            priceFormat: {
-                type: 'price',
-                precision: 3,
-                minMove: 0.001,
-            },
         });
 
         // 创建成交量图
         this.volumeSeries = this.chart.addHistogramSeries({
+            color: '#26a69a',
             priceFormat: {
                 type: 'volume',
             },
-            priceScaleId: 'volume',  // 使用独立的价格轴
+            priceScaleId: '',
             scaleMargins: {
-                top: 0.7,    // 成交量图顶部位置
-                bottom: 0.05 // 底部边距
+                top: 0.8,
+                bottom: 0,
             },
-            color: 'rgba(0, 0, 0, 0.2)',  // 降低默认颜色的不透明度
-        });
-
-        // 配置成交量价格轴
-        this.chart.priceScale('volume').applyOptions({
-            scaleMargins: {
-                top: 0.7,    // 与volumeSeries保持一致
-                bottom: 0.05
-            },
-            drawTicks: false,  // 不绘制刻度线
-            borderVisible: false,  // 不显示边框
         });
 
         // 添加点击事件监听
@@ -128,15 +92,9 @@ class ChartManager {
             }
         });
 
-        // 添加缩放和滚动事件监听
-        this.chart.timeScale().subscribeVisibleLogicalRangeChange(logicalRange => {
-            if (logicalRange === null) return;
-            
-            // 保存当前可见范围
-            this.lastVisibleRange = logicalRange;
-            
-            // 确保标记在可见范围内
-            this.ensureMarkersVisible();
+        // 添加缩放事件监听，确保标记始终显示
+        this.chart.timeScale().subscribeVisibleLogicalRangeChange(() => {
+            this.candlestickSeries.setMarkers(this.markers);
         });
 
         // 添加窗口大小变化监听
@@ -150,7 +108,8 @@ class ChartManager {
             width: container.clientWidth,
             height: height
         });
-        this.ensureMarkersVisible();
+        // 重新设置标记确保显示
+        this.candlestickSeries.setMarkers(this.markers);
     }
 
     setData(data) {
@@ -169,17 +128,15 @@ class ChartManager {
         const volumeData = data.map(item => ({
             time: item.timestamp / 1000,
             value: item.volume,
-            color: item.close >= item.open ? 
-                'rgba(38, 166, 154, 0.3)' :  // 降低上涨成交量的不透明度
-                'rgba(239, 83, 80, 0.3)'     // 降低下跌成交量的不透明度
+            color: item.close >= item.open ? 'rgba(38, 166, 154, 0.5)' : 'rgba(239, 83, 80, 0.5)'
         }));
 
         this.candlestickSeries.setData(candleData);
         this.volumeSeries.setData(volumeData);
         this.chart.timeScale().fitContent();
         
-        // 设置初始标记
-        this.ensureMarkersVisible();
+        // 重新设置标记确保显示
+        this.candlestickSeries.setMarkers(this.markers);
     }
 
     addMarker(timestamp, price, action) {
@@ -196,18 +153,9 @@ class ChartManager {
         // 移除相同时间戳的标记
         this.markers = this.markers.filter(m => m.time !== marker.time);
         this.markers.push(marker);
-        this.ensureMarkersVisible();
-    }
-
-    ensureMarkersVisible() {
-        if (this.markers.length === 0) return;
-
-        // 设置所有标记
-        if (this.highlightedBar) {
-            this.candlestickSeries.setMarkers([...this.markers, this.highlightedBar]);
-        } else {
-            this.candlestickSeries.setMarkers(this.markers);
-        }
+        
+        // 立即更新标记显示
+        this.candlestickSeries.setMarkers(this.markers);
     }
 
     getMarkerConfig(action) {
@@ -246,7 +194,7 @@ class ChartManager {
     removeLastMarker() {
         if (this.markers.length > 0) {
             this.markers.pop();
-            this.ensureMarkersVisible();
+            this.candlestickSeries.setMarkers(this.markers);
             return true;
         }
         return false;
@@ -254,7 +202,7 @@ class ChartManager {
 
     clearMarkers() {
         this.markers = [];
-        this.ensureMarkersVisible();
+        this.candlestickSeries.setMarkers([]);
     }
 
     setTimeSelectedCallback(callback) {
@@ -271,7 +219,7 @@ class ChartManager {
 
     clearHighlight() {
         this.highlightedBar = null;
-        this.ensureMarkersVisible();
+        this.candlestickSeries.setMarkers(this.markers);
     }
 }
 

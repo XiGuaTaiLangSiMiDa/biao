@@ -8,9 +8,9 @@ package-lock.json
 .env.*.local
 
 # Cache
-cache/
-data/positions.json
-data/klines/
+# cache/
+# data/positions.json
+# data/klines/
 
 # IDE
 .vscode/
