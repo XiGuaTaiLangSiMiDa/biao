@@ -17,36 +17,54 @@ class PriceMarkService {
     }
 
     findMaxConsecutiveChange(data, startIndex) {
-        const startPrice = data[startIndex].close;
-        let maxChange = 0;
-        let lastChange = 0;
-        let direction = null;
+        // 检查上升趋势（用当前low比较后续high）
+        const startLow = data[startIndex].low;
+        let maxUpChange = 0;
+        let lastUpChange = 0;
 
         for (let i = startIndex + 1; i < data.length; i++) {
-            const currentPrice = data[i].close;
-            const priceChange = (currentPrice - startPrice) / startPrice;
+            const currentHigh = data[i].high;
+            const upChange = (currentHigh - startLow) / startLow;
             
-            // 确定初始方向
-            if (direction === null) {
-                if (priceChange > 0) direction = 1;
-                else if (priceChange < 0) direction = -1;
-                else continue;
-            }
-
-            // 如果方向改变或变动减小，停止检查
-            if ((direction === 1 && priceChange <= lastChange) ||
-                (direction === -1 && priceChange >= lastChange)) {
+            // 如果变动减小，停止检查
+            if (upChange <= lastUpChange) {
                 break;
             }
 
-            // 更新最大变动
-            if (Math.abs(priceChange) > Math.abs(maxChange)) {
-                maxChange = priceChange;
-                lastChange = priceChange;
+            // 更新最大上升变动
+            if (upChange > maxUpChange) {
+                maxUpChange = upChange;
+                lastUpChange = upChange;
             }
         }
 
-        return maxChange;
+        // 检查下降趋势（用当前high比较后续low）
+        const startHigh = data[startIndex].high;
+        let maxDownChange = 0;
+        let lastDownChange = 0;
+
+        for (let i = startIndex + 1; i < data.length; i++) {
+            const currentLow = data[i].low;
+            const downChange = (currentLow - startHigh) / startHigh;
+            
+            // 如果变动增加，停止检查
+            if (downChange >= lastDownChange) {
+                break;
+            }
+
+            // 更新最大下降变动
+            if (downChange < maxDownChange) {
+                maxDownChange = downChange;
+                lastDownChange = downChange;
+            }
+        }
+
+        // 返回绝对值较大的变动
+        if (Math.abs(maxUpChange) > Math.abs(maxDownChange)) {
+            return { maxChange: maxUpChange };
+        } else {
+            return { maxChange: maxDownChange };
+        }
     }
 
     async markPriceChanges() {
@@ -80,7 +98,7 @@ class PriceMarkService {
             // 遍历每个点
             for (let i = 0; i < sortedData.length; i++) {
                 // 找出从当前点开始的最大连续变动
-                const maxChange = this.findMaxConsecutiveChange(sortedData, i);
+                const { maxChange } = this.findMaxConsecutiveChange(sortedData, i);
                 
                 // 如果变动超过阈值，标记当前点
                 if (Math.abs(maxChange) >= 0.01) {
