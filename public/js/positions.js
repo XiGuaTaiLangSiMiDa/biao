@@ -104,7 +104,7 @@ class PositionsManager {
 
         // 按时间倒序排序
         const sortedPositions = [...this.positions].sort((a, b) => 
-            new Date(b.createdAt) - new Date(a.createdAt)
+            new Date(b.timestamp) - new Date(a.timestamp)
         );
 
         // 创建列表项
@@ -122,7 +122,7 @@ class PositionsManager {
                 <div class="position-info">
                     <div class="position-time">${this.formatDate(position.timestamp)}</div>
                     <div class="position-action ${position.action}">${actionText}</div>
-                    <div class="position-price">价格: ${position.price.toFixed(2)}</div>
+                    <div class="position-price">价格: ${position.price.toFixed(3)}</div>
                 </div>
                 <button class="delete-btn" data-id="${position.id}">删除</button>
             `;
@@ -130,6 +130,33 @@ class PositionsManager {
             // 添加删除按钮事件
             const deleteBtn = item.querySelector('.delete-btn');
             deleteBtn.addEventListener('click', () => this.removePosition(position.id));
+
+            // 添加点击事件以高亮对应的K线
+            item.addEventListener('click', () => {
+                // 清除其他项的选中状态
+                this.listElement.querySelectorAll('.position-item').forEach(p => 
+                    p.classList.remove('selected')
+                );
+                // 添加选中状态
+                item.classList.add('selected');
+                
+                // 在图表上高亮对应的K线
+                const time = position.timestamp / 1000;
+                window.chartManager.chart.timeScale().scrollToPosition(time, 0.5);
+                
+                // 添加高亮标记
+                window.chartManager.highlightedBar = {
+                    time: time,
+                    position: 'inBar',
+                    color: 'rgba(255, 255, 0, 0.3)',
+                    shape: 'square',
+                    size: 1
+                };
+                window.chartManager.candlestickSeries.setMarkers([
+                    ...window.chartManager.markers,
+                    window.chartManager.highlightedBar
+                ]);
+            });
 
             this.listElement.appendChild(item);
         });
@@ -154,14 +181,11 @@ class PositionsManager {
     // 格式化日期
     formatDate(timestamp) {
         const date = new Date(timestamp);
-        return date.toLocaleString('zh-CN', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${month}-${day} ${hours}:${minutes}`;
     }
 
     // 导出标记数据

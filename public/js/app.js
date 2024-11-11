@@ -1,6 +1,6 @@
 class App {
     constructor() {
-        this.timeframe = '1h';
+        this.timeframe = '15m';  // 更新默认时间间隔为15分钟
         this.isMarkerMode = false;
         this.currentAction = null;
     }
@@ -22,6 +22,7 @@ class App {
     setupEventListeners() {
         // 时间周期选择
         const timeframeSelect = document.getElementById('timeframeSelect');
+        timeframeSelect.value = this.timeframe; // 设置默认选中值
         timeframeSelect.addEventListener('change', async (e) => {
             this.timeframe = e.target.value;
             await this.loadData();
@@ -43,6 +44,8 @@ class App {
                     this.currentAction = null;
                     this.isMarkerMode = false;
                     btn.classList.remove('active');
+                    // 清除高亮
+                    window.chartManager.clearHighlight();
                 } else {
                     // 设置新的选中状态
                     markerBtns.forEach(b => b.classList.remove('active'));
@@ -64,17 +67,18 @@ class App {
             if (this.isMarkerMode && this.currentAction) {
                 try {
                     await window.positionsManager.addPosition(
-                        timestamp * 1000, // 转换为毫秒
+                        timestamp,
                         price,
                         this.currentAction
                     );
 
-                    // 重置标记模式
+                    // 重置标记模式和高亮
                     this.isMarkerMode = false;
                     this.currentAction = null;
                     document.querySelectorAll('.marker-btn').forEach(btn => 
                         btn.classList.remove('active')
                     );
+                    window.chartManager.clearHighlight();
                 } catch (error) {
                     console.error('添加标记失败:', error);
                     alert('添加标记失败，请重试');
@@ -85,6 +89,19 @@ class App {
         // 窗口大小改变事件
         window.addEventListener('resize', () => {
             window.chartManager.resize();
+        });
+
+        // 键盘事件监听
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                // 取消标记模式和高亮
+                this.isMarkerMode = false;
+                this.currentAction = null;
+                document.querySelectorAll('.marker-btn').forEach(btn => 
+                    btn.classList.remove('active')
+                );
+                window.chartManager.clearHighlight();
+            }
         });
     }
 
