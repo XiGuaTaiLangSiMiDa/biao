@@ -145,18 +145,31 @@ function normalizeFeatures(features) {
         // Convert to tensor
         const featuresTensor = tf.tensor3d(features);
         
-        // Calculate mean and std for each feature
-        const mean = featuresTensor.mean([0, 1]);
-        const std = featuresTensor.std([0, 1]);
+        // Calculate statistics along time and batch dimensions
+        const meanTensor = tf.mean(featuresTensor, [0, 1]);
+        const squaredDiffs = tf.square(tf.sub(featuresTensor, meanTensor));
+        const variance = tf.mean(squaredDiffs, [0, 1]);
+        const stdTensor = tf.sqrt(tf.add(variance, tf.scalar(1e-8)));
+        
+        // Get the values as arrays
+        const means = meanTensor.arraySync();
+        const stds = stdTensor.arraySync();
         
         // Normalize features
         const normalizedFeatures = features.map(window => {
             return window.map(candle => {
                 return candle.map((value, index) => {
-                    return (value - mean.arraySync()[index]) / (std.arraySync()[index] + 1e-8);
+                    return (value - means[index]) / stds[index];
                 });
             });
         });
+        
+        // Cleanup tensors
+        meanTensor.dispose();
+        variance.dispose();
+        stdTensor.dispose();
+        squaredDiffs.dispose();
+        featuresTensor.dispose();
         
         return normalizedFeatures;
     });
