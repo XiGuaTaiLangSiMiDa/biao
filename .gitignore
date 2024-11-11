@@ -1,40 +1,23 @@
 # Dependencies
 node_modules/
+package-lock.json
 
-# Environment variables
+# Environment
 .env
+.env.local
+.env.*.local
 
-# Cache directory
+# Cache
 cache/
+data/positions.json
+data/klines/
 
 # IDE
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 
-# Logs
-*.log
-npm-debug.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# Model files
-cache/model/
+# OS
+.DS_Store
+Thumbs.db

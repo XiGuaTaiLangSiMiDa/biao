@@ -1734,5 +1734,12 @@
     "price": 158.26,
     "action": "short",
     "createdAt": "2024-11-11T07:23:00.340Z"
+  },
+  {
+    "id": "de792a6d-94a7-410a-a37b-0183f6c80361",
+    "timestamp": 1727576100000,
+    "price": 158.24,
+    "action": "short",
+    "createdAt": "2024-11-11T07:28:51.126Z"
   }
 ]
