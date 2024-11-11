@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K线数据标记系统</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/utilities.css">
+    <!-- 第三方库 -->
     <script type="text/javascript" src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
@@ -25,12 +30,6 @@
         <main>
             <div class="chart-container">
                 <div id="chart"></div>
-                <div class="marker-controls">
-                    <button class="marker-btn" data-action="long">开多/平空</button>
-                    <button class="marker-btn" data-action="short">开空/平多</button>
-                    <button class="marker-btn" data-action="wait">观望</button>
-                    <button id="undoBtn">撤销标记</button>
-                </div>
             </div>
 
             <div class="positions-panel">
@@ -62,9 +61,34 @@
         </div>
     </div>
 
-    <script src="js/api.js"></script>
-    <script src="js/chart.js"></script>
-    <script src="js/positions.js"></script>
-    <script src="js/app.js"></script>
+    <!-- 标记操作弹窗 -->
+    <div id="markerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加标记</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="kline-info">
+                    <div class="time"></div>
+                    <div class="price"></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn long" data-action="long">开多/平空</button>
+                    <button class="action-btn short" data-action="short">开空/平多</button>
+                    <button class="action-btn wait" data-action="wait">观望</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模块化脚本 -->
+    <script type="module">
+        // 导入并初始化所有模块
+        import './js/api/index.js';
+        import './js/chart/index.js';
+        import './js/positions/index.js';
+        import './js/main.js';
+    </script>
 </body>
 </html>

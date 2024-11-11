@@ -31,6 +31,18 @@ class PositionsManager {
     // 添加新的标记位置
     async addPosition(timestamp, price, action) {
         try {
+            // 验证数据
+            if (!this.validatePosition(timestamp, price, action)) {
+                throw new Error('无效的标记数据');
+            }
+
+            // 检查是否已存在相同时间戳的标记
+            const existingPosition = this.positions.find(p => p.timestamp === timestamp);
+            if (existingPosition) {
+                // 如果存在，先删除旧的
+                await this.removePosition(existingPosition.id);
+            }
+
             const position = {
                 timestamp,
                 price,
@@ -59,6 +71,30 @@ class PositionsManager {
             console.error('添加标记位置失败:', error);
             throw error;
         }
+    }
+
+    // 验证标记数据
+    validatePosition(timestamp, price, action) {
+        // 验证时间戳
+        if (!timestamp || isNaN(timestamp) || timestamp <= 0) {
+            console.error('无效的时间戳:', timestamp);
+            return false;
+        }
+
+        // 验证价格
+        if (!price || isNaN(price) || price <= 0) {
+            console.error('无效的价格:', price);
+            return false;
+        }
+
+        // 验证操作类型
+        const validActions = ['long', 'short', 'wait'];
+        if (!validActions.includes(action)) {
+            console.error('无效的操作类型:', action);
+            return false;
+        }
+
+        return true;
     }
 
     // 删除标记位置
@@ -129,7 +165,10 @@ class PositionsManager {
 
             // 添加删除按钮事件
             const deleteBtn = item.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', () => this.removePosition(position.id));
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 阻止事件冒泡
+                this.removePosition(position.id);
+            });
 
             // 添加点击事件以高亮对应的K线
             item.addEventListener('click', () => {
@@ -152,10 +191,7 @@ class PositionsManager {
                     shape: 'square',
                     size: 1
                 };
-                window.chartManager.candlestickSeries.setMarkers([
-                    ...window.chartManager.markers,
-                    window.chartManager.highlightedBar
-                ]);
+                window.chartManager.refreshMarkers();
             });
 
             this.listElement.appendChild(item);
@@ -187,46 +223,9 @@ class PositionsManager {
         const minutes = String(date.getMinutes()).padStart(2, '0');
         return `${month}-${day} ${hours}:${minutes}`;
     }
-
-    // 导出标记数据
-    async exportPositions() {
-        try {
-            const blob = await window.api.exportPositions();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `positions_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } catch (error) {
-            console.error('导出标记数据失败:', error);
-            throw error;
-        }
-    }
-
-    // 导入标记数据
-    async importPositions(file) {
-        try {
-            await window.api.importPositions(file);
-            await this.initialize(); // 重新加载所有标记
-        } catch (error) {
-            console.error('导入标记数据失败:', error);
-            throw error;
-        }
-    }
-
-    // 设置标记添加回调
-    setPositionAddedCallback(callback) {
-        this.onPositionAdded = callback;
-    }
-
-    // 设置标记删除回调
-    setPositionRemovedCallback(callback) {
-        this.onPositionRemoved = callback;
-    }
 }
 
-// 导出标记位置管理器实例
+// 创建全局实例
 window.positionsManager = new PositionsManager();
+
+export default PositionsManager;

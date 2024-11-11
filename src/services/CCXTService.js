@@ -1,4 +1,6 @@
 const ccxt = require('ccxt');
+const fs = require('fs').promises;
+const path = require('path');
 const config = require('../config');
 const KlineData = require('../models/KlineData');
 
@@ -9,27 +11,25 @@ class CCXTService {
             secret: config.SECRET_KEY,
             password: config.PASSPHRASE,
             enableRateLimit: true,
-            timeout: 30000, // 增加超时时间到30秒
+            timeout: 30000,
             options: {
                 defaultType: 'swap',
                 adjustForTimeDifference: true,
-                recvWindow: 60000, // 增加接收窗口
+                recvWindow: 60000,
             },
             urls: {
                 api: {
-                    rest: 'https://www.okx.com' // 使用主域名
+                    rest: 'https://www.okx.com'
                 }
             }
         });
 
-        // 设置请求速率限制
-        this.exchange.rateLimit = 250; // 250ms between requests
+        this.exchange.rateLimit = 250;
         this.exchange.options['warnOnFetchOHLCVLimitArgument'] = false;
     }
 
     async initialize() {
         try {
-            // 尝试3次初始化
             for (let i = 0; i < 3; i++) {
                 try {
                     await this.exchange.loadMarkets();
@@ -47,6 +47,31 @@ class CCXTService {
         } catch (error) {
             console.error('CCXT初始化失败:', error.message);
             return false;
+        }
+    }
+
+    async loadHistoricalData() {
+        try {
+            // 确保缓存目录存在
+            const cacheDir = path.join(process.cwd(), config.CACHE_DIR);
+            await fs.mkdir(cacheDir, { recursive: true });
+
+            // 获取一年的数据
+            const now = Math.floor(Date.now() / 1000);
+            const oneYearAgo = now - config.ONE_YEAR_MS / 1000;
+
+            console.log('开始获取历史数据...');
+            const data = await this.fetchKlineData(oneYearAgo, now);
+
+            // 保存到缓存文件
+            const cacheFile = path.join(cacheDir, config.CACHE_FILE);
+            await fs.writeFile(cacheFile, JSON.stringify(data, null, 2));
+            console.log(`历史数据已保存到: ${cacheFile}`);
+
+            return data;
+        } catch (error) {
+            console.error('加载历史数据失败:', error);
+            throw error;
         }
     }
 
@@ -75,35 +100,22 @@ class CCXTService {
                 try {
                     const batchEnd = Math.min(currentStart + batchSize, end);
                     
-                    // 获取K线数据
                     const ohlcv = await this.exchange.fetchOHLCV(
-                        config.SYMBOL,         // 交易对
-                        config.INTERVAL,       // 时间间隔
-                        currentStart,          // 开始时间
-                        maxDataPoints,         // 限制数量
+                        config.SYMBOL,
+                        config.INTERVAL,
+                        currentStart,
+                        maxDataPoints,
                         {
-                            endTime: batchEnd  // 结束时间
+                            endTime: batchEnd
                         }
                     );
 
                     if (ohlcv && ohlcv.length > 0) {
-                        // 转换为KlineData对象数组
-                        const klineData = ohlcv.map(([timestamp, open, high, low, close, volume]) => 
-                            new KlineData(
-                                timestamp,
-                                open,
-                                high,
-                                low,
-                                close,
-                                volume
-                            )
-                        );
-
+                        const klineData = ohlcv.map(data => KlineData.fromOKXResponse(data));
                         allData = [...allData, ...klineData];
                         currentStart = batchEnd;
                         retryCount = 0;
 
-                        // 等待以避免触发速率限制
                         await new Promise(resolve => setTimeout(resolve, this.exchange.rateLimit));
                     } else {
                         retryCount++;
@@ -143,7 +155,6 @@ class CCXTService {
         }
     }
 
-    // 解析时间间隔字符串为毫秒数
     parseTimeframe(timeframe) {
         const unit = timeframe.slice(-1);
         const value = parseInt(timeframe.slice(0, -1));
@@ -159,7 +170,7 @@ class CCXTService {
     async getLatestKline() {
         try {
             const now = Date.now();
-            const oneHourAgo = now - 3600000; // 1小时前（毫秒）
+            const oneHourAgo = now - 3600000;
             
             const data = await this.fetchKlineData(
                 Math.floor(oneHourAgo / 1000),
