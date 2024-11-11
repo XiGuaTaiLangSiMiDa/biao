@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K线数据标记系统</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>K线数据标记系统</h1>
+            <div class="controls">
+                <select id="timeframeSelect">
+                    <option value="1h">1小时</option>
+                    <option value="4h">4小时</option>
+                    <option value="1d">1天</option>
+                </select>
+                <button id="refreshBtn">刷新数据</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="chart-container">
+                <div id="chart"></div>
+                <div class="marker-controls">
+                    <button class="marker-btn" data-action="long">开多/平空</button>
+                    <button class="marker-btn" data-action="short">开空/平多</button>
+                    <button class="marker-btn" data-action="wait">观望</button>
+                    <button id="undoBtn">撤销标记</button>
+                </div>
+            </div>
+
+            <div class="positions-panel">
+                <h2>标记记录</h2>
+                <div class="positions-list" id="positionsList"></div>
+            </div>
+        </main>
+
+        <div class="stats-panel">
+            <h2>统计信息</h2>
+            <div class="stats-content" id="statsContent">
+                <div class="stat-item">
+                    <span class="stat-label">总标记数:</span>
+                    <span class="stat-value" id="totalMarkers">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">开多/平空:</span>
+                    <span class="stat-value" id="longCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">开空/平多:</span>
+                    <span class="stat-value" id="shortCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">观望:</span>
+                    <span class="stat-value" id="waitCount">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/positions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

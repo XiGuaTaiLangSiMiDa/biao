@@ -9,27 +9,41 @@ class CCXTService {
             secret: config.SECRET_KEY,
             password: config.PASSPHRASE,
             enableRateLimit: true,
+            timeout: 30000, // 增加超时时间到30秒
             options: {
-                defaultType: 'swap',  // 设置为永续合约
+                defaultType: 'swap',
                 adjustForTimeDifference: true,
+                recvWindow: 60000, // 增加接收窗口
             },
             urls: {
                 api: {
-                    rest: 'https://aws.okx.com'  // 使用OKX的AWS服务器
+                    rest: 'https://www.okx.com' // 使用主域名
                 }
             }
         });
 
         // 设置请求速率限制
-        this.exchange.rateLimit = 100; // 100ms between requests
+        this.exchange.rateLimit = 250; // 250ms between requests
         this.exchange.options['warnOnFetchOHLCVLimitArgument'] = false;
     }
 
     async initialize() {
         try {
-            await this.exchange.loadMarkets();
-            console.log('CCXT初始化成功');
-            return true;
+            // 尝试3次初始化
+            for (let i = 0; i < 3; i++) {
+                try {
+                    await this.exchange.loadMarkets();
+                    console.log('CCXT初始化成功');
+                    return true;
+                } catch (error) {
+                    console.error(`CCXT初始化尝试 ${i + 1}/3 失败:`, error.message);
+                    if (i < 2) {
+                        console.log('等待5秒后重试...');
+                        await new Promise(resolve => setTimeout(resolve, 5000));
+                    }
+                }
+            }
+            throw new Error('CCXT初始化失败，已达到最大重试次数');
         } catch (error) {
             console.error('CCXT初始化失败:', error.message);
             return false;
@@ -88,18 +102,20 @@ class CCXTService {
                         allData = [...allData, ...klineData];
                         currentStart = batchEnd;
                         retryCount = 0;
+
+                        // 等待以避免触发速率限制
+                        await new Promise(resolve => setTimeout(resolve, this.exchange.rateLimit));
                     } else {
                         retryCount++;
                         if (retryCount >= maxRetries) {
                             console.log('连续获取空数据，跳过当前时间段');
                             currentStart = batchEnd;
                             retryCount = 0;
+                        } else {
+                            console.log(`获取空数据，等待后重试 (${retryCount}/${maxRetries})`);
+                            await new Promise(resolve => setTimeout(resolve, 2000));
                         }
                     }
-
-                    // 等待以避免触发速率限制
-                    await new Promise(resolve => setTimeout(resolve, this.exchange.rateLimit));
-
                 } catch (error) {
                     console.error(`批次数据获取失败: ${error.message}`);
                     retryCount++;
@@ -107,8 +123,10 @@ class CCXTService {
                         console.log('达到最大重试次数，跳过当前时间段');
                         currentStart += batchSize;
                         retryCount = 0;
+                    } else {
+                        console.log(`等待后重试 (${retryCount}/${maxRetries})`);
+                        await new Promise(resolve => setTimeout(resolve, 5000));
                     }
-                    await new Promise(resolve => setTimeout(resolve, 2000));
                 }
             }
 
