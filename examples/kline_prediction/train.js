@@ -2,37 +2,46 @@ const tf = require('@tensorflow/tfjs-node');
 const path = require('path');
 const { loadData, prepareDataset } = require('./data_loader');
 const { createFeatures, normalizeFeatures } = require('./feature_engineering');
-const { buildModel, trainingConfig, earlyStoppingConfig } = require('./model_builder');
+const { 
+    buildModel, 
+    trainingConfig, 
+    calculatePrecision, 
+    calculateRecall 
+} = require('./model_builder');
 
 async function evaluateModel(model, xTest, yTest) {
     const evaluation = await model.evaluate(xTest, yTest);
     const predictions = model.predict(xTest);
     
-    // Convert predictions to binary (0 or 1)
-    const binaryPredictions = predictions.dataSync().map(p => p > 0.5 ? 1 : 0);
+    // Get raw predictions and labels
+    const predictionValues = predictions.dataSync();
     const actualValues = yTest.dataSync();
     
     // Calculate metrics
+    const precision = calculatePrecision(predictionValues, actualValues);
+    const recall = calculateRecall(predictionValues, actualValues);
+    const f1Score = 2 * (precision * recall) / (precision + recall) || 0;
+    
+    // Calculate confusion matrix
     let truePositives = 0;
     let falsePositives = 0;
     let trueNegatives = 0;
     let falseNegatives = 0;
     
-    binaryPredictions.forEach((pred, i) => {
-        if (pred === 1 && actualValues[i] === 1) truePositives++;
-        if (pred === 1 && actualValues[i] === 0) falsePositives++;
-        if (pred === 0 && actualValues[i] === 0) trueNegatives++;
-        if (pred === 0 && actualValues[i] === 1) falseNegatives++;
+    predictionValues.forEach((pred, i) => {
+        const binaryPred = pred >= 0.5 ? 1 : 0;
+        if (binaryPred === 1 && actualValues[i] === 1) truePositives++;
+        if (binaryPred === 1 && actualValues[i] === 0) falsePositives++;
+        if (binaryPred === 0 && actualValues[i] === 0) trueNegatives++;
+        if (binaryPred === 0 && actualValues[i] === 1) falseNegatives++;
     });
     
-    const accuracy = (truePositives + trueNegatives) / actualValues.length;
-    const precision = truePositives / (truePositives + falsePositives) || 0;
-    const recall = truePositives / (truePositives + falseNegatives) || 0;
-    const f1Score = 2 * (precision * recall) / (precision + recall) || 0;
+    // Cleanup
+    predictions.dispose();
     
     return {
         loss: evaluation[0],
-        accuracy,
+        accuracy: evaluation[1],
         precision,
         recall,
         f1Score,
@@ -78,25 +87,32 @@ async function trainModel() {
         
         // Train model
         console.log('Training model...');
-        await model.fit(xTrain, yTrain, {
+        const history = await model.fit(xTrain, yTrain, {
             ...trainingConfig,
             validationData: [xTest, yTest]
         });
         
         // Evaluate model
-        console.log('Evaluating model...');
+        console.log('\nEvaluating model...');
         const evaluation = await evaluateModel(model, xTest, yTest);
         
+        // Print training history
+        console.log('\nTraining History:');
+        console.log('================');
+        console.log('Final training metrics:');
+        console.log(`Loss: ${history.history.loss[history.history.loss.length - 1].toFixed(4)}`);
+        console.log(`Accuracy: ${(history.history.acc[history.history.acc.length - 1] * 100).toFixed(2)}%`);
+        
         console.log('\nModel Evaluation:');
-        console.log('=================');
-        console.log(`Loss: ${evaluation.loss.toFixed(4)}`);
-        console.log(`Accuracy: ${(evaluation.accuracy * 100).toFixed(2)}%`);
-        console.log(`Precision: ${(evaluation.precision * 100).toFixed(2)}%`);
-        console.log(`Recall: ${(evaluation.recall * 100).toFixed(2)}%`);
-        console.log(`F1 Score: ${(evaluation.f1Score * 100).toFixed(2)}%`);
+        console.log('================');
+        console.log(`Test Loss: ${evaluation.loss.toFixed(4)}`);
+        console.log(`Test Accuracy: ${(evaluation.accuracy * 100).toFixed(2)}%`);
+        console.log(`Test Precision: ${(evaluation.precision * 100).toFixed(2)}%`);
+        console.log(`Test Recall: ${(evaluation.recall * 100).toFixed(2)}%`);
+        console.log(`Test F1 Score: ${(evaluation.f1Score * 100).toFixed(2)}%`);
         
         console.log('\nConfusion Matrix:');
-        console.log('=================');
+        console.log('================');
         console.log(`True Positives: ${evaluation.confusionMatrix.truePositives}`);
         console.log(`False Positives: ${evaluation.confusionMatrix.falsePositives}`);
         console.log(`True Negatives: ${evaluation.confusionMatrix.trueNegatives}`);

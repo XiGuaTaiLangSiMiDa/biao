@@ -79,11 +79,11 @@ function buildModel(config = {}) {
         activation: 'sigmoid'
     }));
 
-    // Compile model with custom metrics
+    // Compile model with only supported metrics
     model.compile({
         optimizer: tf.train.adam(0.001),
         loss: 'binaryCrossentropy',
-        metrics: ['accuracy', 'precision', 'recall']
+        metrics: ['accuracy']
     });
 
     return model;
@@ -117,8 +117,45 @@ const earlyStoppingConfig = {
     mode: 'min'
 };
 
+// Custom metrics calculation functions
+function calculatePrecision(predictions, labels) {
+    let truePositives = 0;
+    let falsePositives = 0;
+    
+    predictions.forEach((pred, i) => {
+        if (pred >= 0.5) {
+            if (labels[i] === 1) {
+                truePositives++;
+            } else {
+                falsePositives++;
+            }
+        }
+    });
+    
+    return truePositives / (truePositives + falsePositives) || 0;
+}
+
+function calculateRecall(predictions, labels) {
+    let truePositives = 0;
+    let falseNegatives = 0;
+    
+    predictions.forEach((pred, i) => {
+        if (labels[i] === 1) {
+            if (pred >= 0.5) {
+                truePositives++;
+            } else {
+                falseNegatives++;
+            }
+        }
+    });
+    
+    return truePositives / (truePositives + falseNegatives) || 0;
+}
+
 module.exports = {
     buildModel,
     trainingConfig,
-    earlyStoppingConfig
+    earlyStoppingConfig,
+    calculatePrecision,
+    calculateRecall
 };
