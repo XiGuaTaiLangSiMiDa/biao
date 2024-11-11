@@ -12,7 +12,7 @@
     "model:train": "node examples/train_model.js",
     "view": "nodemon src/view_server.js",
     "train": "node examples/train_and_predict.js",
-    "predict": "node examples/kline_prediction/predict.js"
+    "predict": "node examples/kline_prediction/prediction_server.js"
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.22.0",
