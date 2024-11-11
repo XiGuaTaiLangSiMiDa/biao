@@ -7,6 +7,7 @@ class ChartManager {
         this.selectedTime = null;
         this.onTimeSelected = null;
         this.highlightedBar = null;
+        this.data = [];
     }
 
     initialize(containerId) {
@@ -15,7 +16,7 @@ class ChartManager {
         // 创建图表
         this.chart = LightweightCharts.createChart(container, {
             width: container.clientWidth,
-            height: container.clientHeight || 800,  // 增加默认高度
+            height: container.clientHeight || 800,
             layout: {
                 background: { color: '#ffffff' },
                 textColor: '#333333',
@@ -44,25 +45,14 @@ class ChartManager {
                 borderColor: '#dcdee0',
                 scaleMargins: {
                     top: 0.1,
-                    bottom: 0.3  // 为成交量留出更多空间
+                    bottom: 0.3
                 }
             },
             timeScale: {
                 borderColor: '#dcdee0',
                 timeVisible: true,
                 secondsVisible: false,
-                barSpacing: 12,  // 增加K线间距
-            },
-            handleScroll: {
-                mouseWheel: true,
-                pressedMouseMove: true,
-                horzTouchDrag: true,
-                vertTouchDrag: true,
-            },
-            handleScale: {
-                axisPressedMouseMove: true,
-                mouseWheel: true,
-                pinch: true,
+                barSpacing: 12,
             },
         });
 
@@ -88,48 +78,45 @@ class ChartManager {
             },
             priceScaleId: 'volume',
             scaleMargins: {
-                top: 0.8,  // 将成交量图表放在底部
-                bottom: 0.02,  // 留出一些底部空间
-            },
-        });
-
-        // 配置成交量价格轴
-        this.chart.priceScale('volume').applyOptions({
-            scaleMargins: {
-                top: 0.8,  // 与volumeSeries的scaleMargins保持一致
+                top: 0.8,
                 bottom: 0.02,
             },
-            visible: true,  // 显示成交量的价格轴
-            drawTicks: false,  // 不绘制刻度线
         });
 
         // 添加点击事件监听
         this.chart.subscribeClick(param => {
             if (param.time) {
-                this.selectedTime = param.time * 1000;
-                const price = this.candlestickSeries.coordinateToPrice(param.point.y);
-                
-                // 移除之前的高亮
-                if (this.highlightedBar) {
-                    this.candlestickSeries.setMarkers(this.markers);
-                }
+                const kline = this.data.find(k => k.timestamp / 1000 === param.time);
+                if (kline) {
+                    this.selectedTime = kline.timestamp;
+                    
+                    // 移除之前的高亮
+                    if (this.highlightedBar) {
+                        this.candlestickSeries.setMarkers(this.markers);
+                    }
 
-                // 添加高亮效果
-                const highlightMarker = {
-                    time: param.time,
-                    position: 'inBar',
-                    color: 'rgba(255, 255, 0, 0.3)',
-                    shape: 'square',
-                    size: 1
-                };
+                    // 添加高亮效果
+                    const highlightMarker = {
+                        time: param.time,
+                        position: 'inBar',
+                        color: 'rgba(255, 255, 0, 0.3)',
+                        shape: 'square',
+                        size: 1
+                    };
 
-                this.highlightedBar = highlightMarker;
-                this.candlestickSeries.setMarkers([...this.markers, highlightMarker]);
+                    this.highlightedBar = highlightMarker;
+                    this.candlestickSeries.setMarkers([...this.markers, highlightMarker]);
 
-                if (this.onTimeSelected) {
-                    this.onTimeSelected(this.selectedTime, price);
+                    if (this.onTimeSelected) {
+                        this.onTimeSelected(kline.timestamp, kline.close, kline);
+                    }
                 }
             }
+        });
+
+        // 添加缩放事件监听
+        this.chart.timeScale().subscribeVisibleTimeRangeChange(() => {
+            this.refreshMarkers();
         });
 
         // 添加窗口大小变化监听
@@ -138,18 +125,18 @@ class ChartManager {
 
     handleResize() {
         const container = this.chart.chartElement().parentElement;
-        const height = container.clientHeight || 800;  // 使用容器高度或默认值
+        const height = container.clientHeight || 800;
         this.chart.applyOptions({
             width: container.clientWidth,
             height: height
         });
-        
-        // 调整图表布局
-        this.chart.timeScale().fitContent();
+        this.refreshMarkers();
     }
 
     setData(data) {
         if (!data || data.length === 0) return;
+
+        this.data = data;
 
         const candleData = data.map(item => ({
             time: item.timestamp / 1000,
@@ -167,8 +154,6 @@ class ChartManager {
 
         this.candlestickSeries.setData(candleData);
         this.volumeSeries.setData(volumeData);
-
-        // 设置时间范围
         this.chart.timeScale().fitContent();
     }
 
@@ -186,8 +171,10 @@ class ChartManager {
         // 移除相同时间戳的标记
         this.markers = this.markers.filter(m => m.time !== marker.time);
         this.markers.push(marker);
+        this.refreshMarkers();
+    }
 
-        // 如果有高亮的K线，保持高亮效果
+    refreshMarkers() {
         if (this.highlightedBar) {
             this.candlestickSeries.setMarkers([...this.markers, this.highlightedBar]);
         } else {
@@ -231,13 +218,7 @@ class ChartManager {
     removeLastMarker() {
         if (this.markers.length > 0) {
             this.markers.pop();
-            
-            // 如果有高亮的K线，保持高亮效果
-            if (this.highlightedBar) {
-                this.candlestickSeries.setMarkers([...this.markers, this.highlightedBar]);
-            } else {
-                this.candlestickSeries.setMarkers(this.markers);
-            }
+            this.refreshMarkers();
             return true;
         }
         return false;
@@ -245,12 +226,7 @@ class ChartManager {
 
     clearMarkers() {
         this.markers = [];
-        // 如果有高亮的K线，只保留高亮效果
-        if (this.highlightedBar) {
-            this.candlestickSeries.setMarkers([this.highlightedBar]);
-        } else {
-            this.candlestickSeries.setMarkers([]);
-        }
+        this.refreshMarkers();
     }
 
     setTimeSelectedCallback(callback) {
@@ -267,35 +243,7 @@ class ChartManager {
 
     clearHighlight() {
         this.highlightedBar = null;
-        this.candlestickSeries.setMarkers(this.markers);
-    }
-
-    // 添加技术指标
-    addIndicator(type) {
-        switch (type) {
-            case 'MA':
-                // 添加移动平均线
-                const ma7 = this.chart.addLineSeries({
-                    color: '#2196F3',
-                    lineWidth: 1,
-                    title: 'MA7',
-                    priceScaleId: 'right'
-                });
-                const ma25 = this.chart.addLineSeries({
-                    color: '#FF9800',
-                    lineWidth: 1,
-                    title: 'MA25',
-                    priceScaleId: 'right'
-                });
-                const ma99 = this.chart.addLineSeries({
-                    color: '#E91E63',
-                    lineWidth: 1,
-                    title: 'MA99',
-                    priceScaleId: 'right'
-                });
-                break;
-            // 可以添加其他指标
-        }
+        this.refreshMarkers();
     }
 }
 

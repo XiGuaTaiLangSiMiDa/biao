@@ -1,8 +1,11 @@
 class App {
     constructor() {
-        this.timeframe = '15m';  // 更新默认时间间隔为15分钟
-        this.isMarkerMode = false;
-        this.currentAction = null;
+        this.timeframe = '15m';
+        this.selectedKline = null;
+        this.modal = null;
+        this.modalTimeElement = null;
+        this.modalPriceElement = null;
+        this.modalVolumeElement = null;
     }
 
     async initialize() {
@@ -12,6 +15,9 @@ class App {
         // 初始化标记位置管理器
         await window.positionsManager.initialize();
 
+        // 初始化弹窗
+        this.initializeModal();
+
         // 设置事件监听器
         this.setupEventListeners();
 
@@ -19,10 +25,44 @@ class App {
         await this.loadData();
     }
 
+    initializeModal() {
+        this.modal = document.getElementById('markerModal');
+        this.modalTimeElement = this.modal.querySelector('.kline-info .time');
+        this.modalPriceElement = this.modal.querySelector('.kline-info .price');
+        this.modalVolumeElement = this.modal.querySelector('.kline-info .volume');
+
+        // 关闭按钮事件
+        this.modal.querySelector('.close-btn').addEventListener('click', () => {
+            this.closeModal();
+        });
+
+        // 点击弹窗外部关闭
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) {
+                this.closeModal();
+            }
+        });
+
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+                this.closeModal();
+            }
+        });
+
+        // 操作按钮事件
+        this.modal.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                this.addMarker(action);
+            });
+        });
+    }
+
     setupEventListeners() {
         // 时间周期选择
         const timeframeSelect = document.getElementById('timeframeSelect');
-        timeframeSelect.value = this.timeframe; // 设置默认选中值
+        timeframeSelect.value = this.timeframe;
         timeframeSelect.addEventListener('change', async (e) => {
             this.timeframe = e.target.value;
             await this.loadData();
@@ -34,81 +74,88 @@ class App {
             await this.loadData(true);
         });
 
-        // 标记按钮
-        const markerBtns = document.querySelectorAll('.marker-btn');
-        markerBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const action = btn.dataset.action;
-                if (this.currentAction === action) {
-                    // 取消选中状态
-                    this.currentAction = null;
-                    this.isMarkerMode = false;
-                    btn.classList.remove('active');
-                    // 清除高亮
-                    window.chartManager.clearHighlight();
-                } else {
-                    // 设置新的选中状态
-                    markerBtns.forEach(b => b.classList.remove('active'));
-                    this.currentAction = action;
-                    this.isMarkerMode = true;
-                    btn.classList.add('active');
-                }
-            });
-        });
-
-        // 撤销按钮
-        const undoBtn = document.getElementById('undoBtn');
-        undoBtn.addEventListener('click', () => {
-            window.chartManager.removeLastMarker();
-        });
-
         // 图表点击事件
-        window.chartManager.setTimeSelectedCallback(async (timestamp, price) => {
-            if (this.isMarkerMode && this.currentAction) {
-                try {
-                    await window.positionsManager.addPosition(
-                        timestamp,
-                        price,
-                        this.currentAction
-                    );
-
-                    // 重置标记模式和高亮
-                    this.isMarkerMode = false;
-                    this.currentAction = null;
-                    document.querySelectorAll('.marker-btn').forEach(btn => 
-                        btn.classList.remove('active')
-                    );
-                    window.chartManager.clearHighlight();
-                } catch (error) {
-                    console.error('添加标记失败:', error);
-                    alert('添加标记失败，请重试');
-                }
-            }
+        window.chartManager.setTimeSelectedCallback((timestamp, price, kline) => {
+            this.selectedKline = kline;
+            this.showModal(kline);
         });
 
         // 窗口大小改变事件
         window.addEventListener('resize', () => {
             window.chartManager.resize();
         });
+    }
 
-        // 键盘事件监听
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // 取消标记模式和高亮
-                this.isMarkerMode = false;
-                this.currentAction = null;
-                document.querySelectorAll('.marker-btn').forEach(btn => 
-                    btn.classList.remove('active')
-                );
-                window.chartManager.clearHighlight();
-            }
-        });
+    showModal(kline) {
+        // 更新弹窗信息
+        this.modalTimeElement.textContent = this.formatDateTime(kline.timestamp);
+        this.modalPriceElement.textContent = `价格: ${kline.close.toFixed(3)}`;
+        this.modalVolumeElement.textContent = `成交量: ${kline.volume.toFixed(3)}`;
+        
+        // 显示弹窗
+        this.modal.classList.add('active');
+    }
+
+    closeModal() {
+        this.modal.classList.remove('active');
+        this.selectedKline = null;
+        window.chartManager.clearHighlight();
+    }
+
+    async addMarker(action) {
+        if (!this.selectedKline) return;
+
+        try {
+            await window.positionsManager.addPosition(
+                this.selectedKline.timestamp,
+                this.selectedKline.close,
+                action
+            );
+
+            // 关闭弹窗
+            this.closeModal();
+
+            // 显示成功提示
+            this.showToast(`成功添加${this.getActionText(action)}标记`);
+        } catch (error) {
+            console.error('添加标记失败:', error);
+            this.showToast('添加标记失败，请重试', 'error');
+        }
+    }
+
+    showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `floating-tooltip ${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 2000);
+    }
+
+    getActionText(action) {
+        return {
+            'long': '开多/平空',
+            'short': '开空/平多',
+            'wait': '观望'
+        }[action] || '';
+    }
+
+    formatDateTime(timestamp) {
+        const date = new Date(timestamp);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${month}-${day} ${hours}:${minutes}`;
     }
 
     async loadData(forceUpdate = false) {
         try {
             // 显示加载状态
             document.body.classList.add('loading');
+            this.showToast('正在加载数据...', 'info');
 
             if (forceUpdate) {
                 // 强制更新数据
@@ -126,32 +173,15 @@ class App {
             // 重新加载标记
             await window.positionsManager.initialize();
 
+            // 显示成功提示
+            this.showToast('数据加载完成');
+
         } catch (error) {
             console.error('加载数据失败:', error);
-            alert('加载数据失败，请检查网络连接后重试');
+            this.showToast('加载数据失败，请检查网络连接后重试', 'error');
         } finally {
             // 隐藏加载状态
             document.body.classList.remove('loading');
-        }
-    }
-
-    // 导出标记数据
-    async exportData() {
-        try {
-            await window.positionsManager.exportPositions();
-        } catch (error) {
-            console.error('导出数据失败:', error);
-            alert('导出数据失败，请重试');
-        }
-    }
-
-    // 导入标记数据
-    async importData(file) {
-        try {
-            await window.positionsManager.importPositions(file);
-        } catch (error) {
-            console.error('导入数据失败:', error);
-            alert('导入数据失败，请检查文件格式是否正确');
         }
     }
 }

@@ -1,3 +1,4 @@
+/* 基础样式 */
 * {
     margin: 0;
     padding: 0;
@@ -17,6 +18,7 @@ body {
     padding: 20px;
 }
 
+/* 头部样式 */
 header {
     display: flex;
     justify-content: space-between;
@@ -47,10 +49,7 @@ select, button {
     font-size: 14px;
 }
 
-button:hover {
-    background-color: #f0f0f0;
-}
-
+/* 主要内容布局 */
 main {
     display: grid;
     grid-template-columns: 1fr 300px;
@@ -74,53 +73,7 @@ main {
     min-height: 600px;
 }
 
-.marker-controls {
-    display: flex;
-    gap: 10px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    height: 60px;
-}
-
-.marker-btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.marker-btn[data-action="long"] {
-    background-color: #26a69a;
-}
-
-.marker-btn[data-action="short"] {
-    background-color: #ef5350;
-}
-
-.marker-btn[data-action="wait"] {
-    background-color: #ffb74d;
-}
-
-.marker-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-.marker-btn.active {
-    opacity: 0.8;
-    transform: translateY(1px);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#undoBtn {
-    background-color: #95a5a6;
-    color: #fff;
-}
-
+/* 标记列表面板 */
 .positions-panel {
     background-color: #fff;
     padding: 20px;
@@ -131,30 +84,9 @@ main {
     flex-direction: column;
 }
 
-.positions-panel h2 {
-    margin-bottom: 15px;
-    color: #2c3e50;
-    font-size: 18px;
-}
-
 .positions-list {
     flex: 1;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #ddd #fff;
-}
-
-.positions-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.positions-list::-webkit-scrollbar-track {
-    background: #fff;
-}
-
-.positions-list::-webkit-scrollbar-thumb {
-    background-color: #ddd;
-    border-radius: 3px;
 }
 
 .position-item {
@@ -164,7 +96,7 @@ main {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .position-item:hover {
@@ -174,10 +106,6 @@ main {
 .position-item.selected {
     background-color: #e3f2fd;
     border-left: 3px solid #2196f3;
-}
-
-.position-item:last-child {
-    border-bottom: none;
 }
 
 .position-info {
@@ -212,38 +140,130 @@ main {
     color: #2c3e50;
 }
 
-.delete-btn {
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #fff;
-    background-color: #ef5350;
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.modal-header .close-btn {
+    background: none;
     border: none;
-    border-radius: 4px;
+    font-size: 24px;
+    color: #95a5a6;
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    padding: 0;
+    line-height: 1;
 }
 
-.position-item:hover .delete-btn {
-    opacity: 1;
+.modal-body {
+    padding: 20px;
 }
 
-.delete-btn:hover {
-    background-color: #e53935;
+.kline-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
 }
 
+.kline-info .time {
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.kline-info .price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.kline-info .volume {
+    font-size: 14px;
+    color: #666;
+}
+
+.action-buttons {
+    display: grid;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.action-btn:active {
+    transform: translateY(1px);
+}
+
+.action-btn.long {
+    background-color: #26a69a;
+}
+
+.action-btn.short {
+    background-color: #ef5350;
+}
+
+.action-btn.wait {
+    background-color: #ffb74d;
+}
+
+/* 统计面板 */
 .stats-panel {
     margin-top: 20px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.stats-panel h2 {
-    margin-bottom: 15px;
-    color: #2c3e50;
-    font-size: 18px;
 }
 
 .stats-content {
@@ -257,11 +277,6 @@ main {
     padding: 10px;
     background-color: #f8f9fa;
     border-radius: 4px;
-    transition: transform 0.2s ease;
-}
-
-.stat-item:hover {
-    transform: translateY(-2px);
 }
 
 .stat-label {
@@ -275,6 +290,18 @@ main {
     font-size: 18px;
     font-weight: bold;
     color: #2c3e50;
+}
+
+/* 动画 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 响应式设计 */
@@ -307,12 +334,6 @@ main {
         gap: 10px;
     }
 
-    .marker-controls {
-        flex-direction: column;
-        height: auto;
-        gap: 8px;
-    }
-
     .stats-content {
         grid-template-columns: 1fr;
     }
@@ -325,6 +346,29 @@ main {
         height: calc(100% - 200px);
         min-height: 400px;
     }
+
+    .modal-content {
+        width: 95%;
+    }
+}
+
+/* 工具提示 */
+.floating-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(33, 150, 243, 0.9);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+.floating-tooltip.error {
+    background-color: rgba(239, 83, 80, 0.9);
 }
 
 /* 加载状态 */
@@ -333,29 +377,22 @@ main {
     pointer-events: none;
 }
 
-/* 工具提示 */
-[data-tooltip] {
-    position: relative;
-}
-
-[data-tooltip]:before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
+.loading:after {
+    content: '';
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
-    background-color: rgba(0,0,0,0.8);
-    color: #fff;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #2196f3;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 1000;
 }
 
-[data-tooltip]:hover:before {
-    opacity: 1;
-    visibility: visible;
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }

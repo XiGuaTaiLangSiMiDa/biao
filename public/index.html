@@ -25,12 +25,6 @@
         <main>
             <div class="chart-container">
                 <div id="chart"></div>
-                <div class="marker-controls">
-                    <button class="marker-btn" data-action="long">开多/平空</button>
-                    <button class="marker-btn" data-action="short">开空/平多</button>
-                    <button class="marker-btn" data-action="wait">观望</button>
-                    <button id="undoBtn">撤销标记</button>
-                </div>
             </div>
 
             <div class="positions-panel">
@@ -57,6 +51,28 @@
                 <div class="stat-item">
                     <span class="stat-label">观望:</span>
                     <span class="stat-value" id="waitCount">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 标记操作弹窗 -->
+    <div id="markerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加标记</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="kline-info">
+                    <div class="time"></div>
+                    <div class="price"></div>
+                    <div class="volume"></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn long" data-action="long">开多/平空</button>
+                    <button class="action-btn short" data-action="short">开空/平多</button>
+                    <button class="action-btn wait" data-action="wait">观望</button>
                 </div>
             </div>
         </div>
